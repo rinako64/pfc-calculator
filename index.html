@@ -3,34 +3,263 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My PFC Balance Calculator</title>
+<title>My PFC & Training</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0c0c0f;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a32;--text:#e8e6e3;--text-dim:#7f8c8dh;--accent:#00d2ff;--accent2:#7b61ff;--accent-glow:rgba(0,210,255,0.15);--green:#00e676;--orange:#ff9100;--pink:#ff4081;--radius:16px;--radius-sm:10px}
+:root{--bg:#0c0c0f;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a32;--text:#e8e6e3;--text-dim:#7f8c8d;--accent:#00d2ff;--accent2:#7b61ff;--accent-glow:rgba(0,210,255,0.15);--green:#00e676;--orange:#ff9100;--pink:#ff4081;--radius:16px;--radius-sm:10px}
 html{font-size:16px}body{font-family:'Outfit','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(0,210,255,0.04),transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(123,97,255,0.04),transparent 50%);pointer-events:none;z-index:0}
 .app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:24px 16px 60px}
-.header{text-align:center;margin-bottom:32px;padding-top:20px}.header h1{font-size:1.5rem;font-weight:600;letter-spacing:-0.02em;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.header p{font-size:0.82rem;color:var(--text-dim);margin-top:4px;font-weight:300}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}.card-title{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:8px}.card-title::before{content:'';display:inline-block;width:3px;height:14px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:2px}
-.input-group{margin-bottom:16px}.input-label{display:block;font-size:0.78rem;color:var(--text-dim);margin-bottom:6px}.input-row{display:flex;gap:10px}.input-row .input-group{flex:1}.input-field{width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:inherit;font-size:1rem;font-weight:500;outline:none;transition:all 0.25s ease;-webkit-appearance:none}.input-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}.input-field::placeholder{color:#444;font-weight:300}.unit{font-size:0.72rem;color:var(--text-dim);margin-top:3px}
-.calc-btn{width:100%;padding:16px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 24px rgba(0,210,255,0.25);margin-top:8px}.calc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(0,210,255,0.35)}
-.results{display:none;animation:fadeUp 0.5s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.result-hero{text-align:center;padding:28px 20px;background:linear-gradient(135deg,rgba(0,210,255,0.08),rgba(123,97,255,0.08));border:1px solid rgba(0,210,255,0.15);border-radius:var(--radius);margin-bottom:16px}.result-hero .label{font-size:0.72rem;color:var(--accent);font-weight:500;text-transform:uppercase;letter-spacing:0.1em}.result-hero .value{font-size:2.8rem;font-weight:700;letter-spacing:-0.03em;margin-top:4px;line-height:1}.result-hero .value span{font-size:1rem;font-weight:400;color:var(--text-dim)}
-.macro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}.macro-card{text-align:center;padding:20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden}.macro-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}.macro-card.protein::before{background:linear-gradient(90deg,var(--accent),#00b4d8)}.macro-card.fat::before{background:linear-gradient(90deg,var(--orange),#ffab40)}.macro-card.carb::before{background:linear-gradient(90deg,var(--accent2),#b388ff)}.macro-card .macro-label{font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em}.macro-card .macro-value{font-size:1.6rem;font-weight:700;margin-top:6px}.macro-card .macro-value span{font-size:0.8rem;font-weight:400;color:var(--text-dim)}.macro-card.protein .macro-value{color:var(--accent)}.macro-card.fat .macro-value{color:var(--orange)}.macro-card.carb .macro-value{color:var(--accent2)}
-.pace-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:16px;font-size:0.85rem}.pace-bar .pace-val{font-weight:600;color:var(--green)}
+.header{text-align:center;margin-bottom:24px;padding-top:20px}
+.header h1{font-size:1.5rem;font-weight:600;letter-spacing:-0.02em;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{font-size:0.82rem;color:var(--text-dim);margin-top:4px;font-weight:300}
+
+/* Tab Navigation */
+.tab-nav{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:24px}
+.tab-btn{flex:1;padding:12px 8px;border:none;border-radius:12px;background:transparent;color:var(--text-dim);font-family:inherit;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.25s ease}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 16px rgba(0,210,255,0.2)}
+.tab-page{display:none}.tab-page.active{display:block;animation:fadeUp 0.4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards & Inputs */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+.card-title{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-title::before{content:'';display:inline-block;width:3px;height:14px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:2px}
+.card-title.orange{color:var(--orange)}.card-title.orange::before{background:linear-gradient(180deg,var(--orange),var(--pink))}
+.card-title.green{color:var(--green)}.card-title.green::before{background:linear-gradient(180deg,var(--green),#00b4d8)}
+.input-group{margin-bottom:16px}.input-label{display:block;font-size:0.78rem;color:var(--text-dim);margin-bottom:6px}
+.input-row{display:flex;gap:10px}.input-row .input-group{flex:1}
+.input-field{width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:inherit;font-size:1rem;font-weight:500;outline:none;transition:all 0.25s ease;-webkit-appearance:none}
+.input-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.input-field::placeholder{color:#444;font-weight:300}
+.unit{font-size:0.72rem;color:var(--text-dim);margin-top:3px}
+
+/* Buttons */
+.calc-btn{width:100%;padding:16px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 24px rgba(0,210,255,0.25);margin-top:8px}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(0,210,255,0.35)}
+.workout-btn{width:100%;padding:18px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--orange),var(--pink));color:#fff;font-family:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 24px rgba(255,145,0,0.25);letter-spacing:0.02em}
+.workout-btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(255,145,0,0.35)}
+
+/* Results */
+.results{display:none;animation:fadeUp 0.5s ease both}
+.result-hero{text-align:center;padding:28px 20px;background:linear-gradient(135deg,rgba(0,210,255,0.08),rgba(123,97,255,0.08));border:1px solid rgba(0,210,255,0.15);border-radius:var(--radius);margin-bottom:16px}
+.result-hero .label{font-size:0.72rem;color:var(--accent);font-weight:500;text-transform:uppercase;letter-spacing:0.1em}
+.result-hero .value{font-size:2.8rem;font-weight:700;letter-spacing:-0.03em;margin-top:4px;line-height:1}
+.result-hero .value span{font-size:1rem;font-weight:400;color:var(--text-dim)}
+.macro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.macro-card{text-align:center;padding:20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden}
+.macro-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.macro-card.protein::before{background:linear-gradient(90deg,var(--accent),#00b4d8)}
+.macro-card.fat::before{background:linear-gradient(90deg,var(--orange),#ffab40)}
+.macro-card.carb::before{background:linear-gradient(90deg,var(--accent2),#b388ff)}
+.macro-card .macro-label{font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em}
+.macro-card .macro-value{font-size:1.6rem;font-weight:700;margin-top:6px}
+.macro-card .macro-value span{font-size:0.8rem;font-weight:400;color:var(--text-dim)}
+.macro-card.protein .macro-value{color:var(--accent)}.macro-card.fat .macro-value{color:var(--orange)}.macro-card.carb .macro-value{color:var(--accent2)}
+.pace-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:16px;font-size:0.85rem}
+.pace-bar .pace-val{font-weight:600;color:var(--green)}
 .detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.82rem}.detail-row:last-child{border-bottom:none}.detail-row .dl{color:var(--text-dim)}.detail-row .dv{font-weight:500}
-.advice{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px}.advice-title{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--orange);margin-bottom:14px;display:flex;align-items:center;gap:8px}.advice-title::before{content:'';display:inline-block;width:3px;height:14px;background:linear-gradient(180deg,var(--orange),var(--pink));border-radius:2px}
-.advice-block{margin-bottom:16px}.advice-block h4{font-size:0.82rem;font-weight:600;margin-bottom:8px}.advice-block p,.advice-block li{font-size:0.78rem;color:var(--text-dim);line-height:1.7;font-weight:300}.advice-block ul{list-style:none;padding:0}.advice-block li{padding:3px 0;padding-left:18px;position:relative}.advice-block li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.5}
-.walking-block{margin-top:14px;padding:14px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.12);border-radius:var(--radius-sm)}.walking-block p{font-size:0.78rem;color:var(--text-dim);line-height:1.7;font-weight:300}.walking-highlight{color:var(--green)!important;font-weight:500!important}
+
+/* Advice */
+.advice{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px}
+.advice-block{margin-bottom:16px}.advice-block:last-child{margin-bottom:0}.advice-block h4{font-size:0.82rem;font-weight:600;margin-bottom:8px}
+.advice-block p,.advice-block li{font-size:0.78rem;color:var(--text-dim);line-height:1.7;font-weight:300}
+.advice-block ul{list-style:none;padding:0}.advice-block li{padding:3px 0;padding-left:18px;position:relative}
+.advice-block li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.5}
+.walking-block{margin-top:14px;padding:14px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.12);border-radius:var(--radius-sm)}
+.walking-block p{font-size:0.78rem;color:var(--text-dim);line-height:1.7;font-weight:300}
+.walking-highlight{color:var(--green)!important;font-weight:500!important}
+
+/* Workout Page */
+.menu-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 20px;border-radius:20px;font-size:1.2rem;font-weight:700;margin:16px auto;letter-spacing:0.05em}
+.menu-badge.menu-a{background:rgba(0,210,255,0.12);color:var(--accent);border:1px solid rgba(0,210,255,0.25)}
+.menu-badge.menu-b{background:rgba(123,97,255,0.12);color:var(--accent2);border:1px solid rgba(123,97,255,0.25)}
+.workout-display{display:none;animation:fadeUp 0.5s ease both}
+.exercise-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.exercise-name{font-size:0.95rem;font-weight:600;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.exercise-meta{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.meta-tag{padding:4px 10px;border-radius:6px;font-size:0.72rem;font-weight:500;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)}
+.meta-tag b{color:var(--text);font-weight:600}
+.set-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.set-label{font-size:0.75rem;color:var(--text-dim);width:52px;flex-shrink:0;font-weight:500}
+.set-input{flex:1;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.9rem;font-weight:500;outline:none;text-align:center;transition:border-color 0.2s}
+.set-input:focus{border-color:var(--orange)}
+.set-input::placeholder{color:#444;font-size:0.8rem}
+
 .footer{text-align:center;margin-top:32px;font-size:0.68rem;color:#444;font-weight:300}
-</style></head><body>
+</style>
+</head>
+<body>
 <div class="app">
-<div class="header"><h1>My PFC Calculator</h1><p>パーソナル減量サポート</p></div>
-<div class="card"><div class="card-title">測定データ入力</div>
-<div class="input-group"><label class="input-label">体重</label><input type="number" class="input-field" id="weight" placeholder="56.0" step="0.1"><div class="unit">kg</div></div>
-<div class="input-row"><div class="input-group"><label class="input-label">首回り</label><input type="number" class="input-field" id="neck" placeholder="34.5" step="0.1" value="34.5"><div class="unit">cm</div></div>
-<div class="input-group"><label class="input-label">ウエスト（へそ周り）</label><input type="number" class="input-field" id="waist" placeholder="78.0" step="0.1"><div class="unit">cm</div></div></div>
-<div class="input-group"><label class="input-label">ヒップ</label><input type="number" class="input-field" id="hip" placeholder="94.0" step="0.1"><div class="unit">cm</div></div>
-<button class="calc-btn" onclick="calculate()">計算する</button></div>
-<div class="results" id="results">
+  <div class="header"><h1>My PFC & Training</h1><p>ãã¼ã½ãã«æ¸éãµãã¼ã</p></div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('pfc')">PFCè¨ç®</button>
+    <button class="tab-btn" onclick="switchTab('workout')">ç­ãã¬ç®¡ç</button>
+  </div>
+
+  <!-- ===== PFC PAGE ===== -->
+  <div class="tab-page active" id="page-pfc">
+    <div class="card"><div class="card-title">æ¸¬å®ãã¼ã¿å¥å</div>
+      <div class="input-group"><label class="input-label">ä½é</label><input type="number" class="input-field" id="weight" placeholder="56.0" step="0.1"><div class="unit">kg</div></div>
+      <div class="input-row">
+        <div class="input-group"><label class="input-label">é¦åã</label><input type="number" class="input-field" id="neck" placeholder="34.5" step="0.1" value="34.5"><div class="unit">cm</div></div>
+        <div class="input-group"><label class="input-label">ã¦ã¨ã¹ãï¼ã¸ãå¨ãï¼</label><input type="number" class="input-field" id="waist" placeholder="78.0" step="0.1"><div class="unit">cm</div></div>
+      </div>
+      <div class="input-group"><label class="input-label">ããã</label><input type="number" class="input-field" id="hip" placeholder="94.0" step="0.1"><div class="unit">cm</div></div>
+      <button class="calc-btn" onclick="calculate()">è¨ç®ãã</button>
+    </div>
+    <div class="results" id="results">
+      <div class="result-hero"><div class="label">1æ¥ã®æåã«ã­ãªã¼</div><div class="value" id="calValue">--<span> kcal</span></div></div>
+      <div class="macro-grid">
+        <div class="macro-card protein"><div class="macro-label">ã¿ã³ãã¯è³ª</div><div class="macro-value" id="pValue">--<span>g</span></div></div>
+        <div class="macro-card fat"><div class="macro-label">èè³ª</div><div class="macro-value" id="fValue">--<span>g</span></div></div>
+        <div class="macro-card carb"><div class="macro-label">ç³è³ª</div><div class="macro-value" id="cValue">--<span>g</span></div></div>
+      </div>
+      <div class="pace-bar"><span>ð</span>æ³å®ãã¼ã¹ï¼<span class="pace-val" id="paceValue">--</span> kg/æ</div>
+      <div class="card"><div class="card-title">åè¨³</div>
+        <div class="detail-row"><span class="dl">ä½èèªç</span><span class="dv" id="bfValue">--%</span></div>
+        <div class="detail-row"><span class="dl">é¤èèªä½é (LBM)</span><span class="dv" id="lbmValue">-- kg</span></div>
+        <div class="detail-row"><span class="dl">åºç¤ä»£è¬ (BMR)</span><span class="dv" id="bmrValue">-- kcal</span></div>
+        <div class="detail-row"><span class="dl">ç·æ¶è²»ã«ã­ãªã¼ (TDEE)</span><span class="dv" id="tdeeValue">-- kcal</span></div>
+      </div>
+      <div class="advice"><div class="card-title orange">ã¬ã¤ãã©ã¤ã³</div>
+        <div class="advice-block"><h4>ãè¨±å®¹ç¯å²ã</h4><ul>
+          <li>æåã«ã­ãªã¼ï¼+0ã100kcal</li><li>ã¿ã³ãã¯è³ªï¼Â±15g</li><li>èè³ªï¼Â±10g</li>
+          <li>ç³è³ªï¼ã¿ã³ãã¯è³ªã»èè³ªãæã£ãå¾ãä½ã£ãã«ã­ãªã¼åãæã</li></ul></div>
+        <div class="walking-block"><p class="walking-highlight">1æ¥8,000ã10,000æ­©ãç®æ¨ã«æ¯æ¥æ­©ãããã«ãã¾ããã</p>
+          <p style="margin-top:8px">ãã®æ­©æ°ã¯è²·ãç©ãéå¤ãªã©ãæ¥å¸¸çæ´»ã§ã®æ´»åãå«ãã§OKã§ã</p>
+          <p style="margin-top:8px">æ­©æ°ãç¨¼ããªãã¦ãé£äºã«æ°ãã¤ããã°ç©ããå¯è½æ§ã¯ããã¾ãããç©ããã¨ãã¦ããã¼ã¹ãéå¸¸ã«éãorå¨ãç©ããªãå ´åãæ®ã©ãªã®ã§ãå¯è½ãªéãæ­©ãããã«ãã¾ããã</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WORKOUT PAGE ===== -->
+  <div class="tab-page" id="page-workout">
+    <div style="text-align:center;margin-bottom:20px">
+      <button class="workout-btn" onclick="showTodayWorkout()">ðª ä»æ¥ã®ç­ãã¬ã¡ãã¥ã¼</button>
+    </div>
+
+    <div class="workout-display" id="workoutDisplay">
+      <div style="text-align:center;margin-bottom:20px">
+        <div class="menu-badge" id="menuBadge">ã¡ãã¥ã¼ A</div>
+      </div>
+      <div id="exerciseList"></div>
+    </div>
+  </div>
+
+  <div class="footer">Calibrated PFC & Training Tracker</div>
+</div>
+
+<script>
+// ===== TAB SWITCHING =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', (tab==='pfc'&&i===0)||(tab==='workout'&&i===1));
+  });
+  document.getElementById('page-pfc').classList.toggle('active', tab==='pfc');
+  document.getElementById('page-workout').classList.toggle('active', tab==='workout');
+}
+
+// ===== PFC CALCULATOR =====
+function calculate(){
+  var w=parseFloat(document.getElementById('weight').value),
+      n=parseFloat(document.getElementById('neck').value),
+      ws=parseFloat(document.getElementById('waist').value),
+      h=parseFloat(document.getElementById('hip').value);
+  if(!w||!n||!ws||!h){alert('ãã¹ã¦ã®é ç®ãå¥åãã¦ãã ãã');return}
+  var H=164,A=1.3208,PC=2.6628,
+      c=ws+h-n,
+      d=1.29579-0.35004*Math.log10(c)+0.22100*Math.log10(H),
+      bf=495/d-450,lbm=w*(1-bf/100),bmr=370+21.6*lbm,
+      tdee=bmr*A,pace=Math.round(w*0.02*10)/10,
+      def=pace*7200/30,cal=tdee-def,
+      P=Math.round(lbm*PC*10)/10,
+      F=Math.round(cal*0.25/9*10)/10,
+      C=Math.round((cal-P*4-F*9)/4*10)/10;
+  document.getElementById('calValue').innerHTML=Math.round(cal*10)/10+'<span> kcal</span>';
+  document.getElementById('pValue').innerHTML=P+'<span>g</span>';
+  document.getElementById('fValue').innerHTML=F+'<span>g</span>';
+  document.getElementById('cValue').innerHTML=C+'<span>g</span>';
+  document.getElementById('paceValue').textContent=pace;
+  document.getElementById('bfValue').textContent=bf.toFixed(1)+'%';
+  document.getElementById('lbmValue').textContent=lbm.toFixed(1)+' kg';
+  document.getElementById('bmrValue').textContent=Math.round(bmr)+' kcal';
+  document.getElementById('tdeeValue').textContent=Math.round(tdee)+' kcal';
+  var r=document.getElementById('results');r.style.display='block';
+  r.style.animation='none';r.offsetHeight;r.style.animation='fadeUp 0.5s ease both';
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ===== WORKOUT TRACKER =====
+var menus = {
+  A: [
+    {name:'ã©ã³ã¸', sets:'3-4', reps:'6-12', rest:'3 min'},
+    {name:'ãããã¹ã©ã¹ã', sets:'3-4', reps:'10-20', rest:'2 min'},
+    {name:'ãã³ããã¬ã¹', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ãã¼ãã«ã­ã¦', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ã±ã¼ãã«ã¯ã©ã³ã', sets:'6-8', reps:'10-20', rest:'2 min'},
+  ],
+  B: [
+    {name:'ã«ã¼ããã¢ã³ããããªãã', sets:'3-4', reps:'6-12', rest:'3 min'},
+    {name:'ãããã¹ã©ã¹ã', sets:'3-4', reps:'10-20', rest:'2 min'},
+    {name:'ãªã¼ãã¼ããããã¬ã¹', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ã©ãããã«ãã¦ã³', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ã±ã¼ãã«ã¯ã©ã³ã', sets:'6-8', reps:'10-20', rest:'2 min'},
+  ]
+};
+
+function getLastMenu() {
+  try { return localStorage.getItem('lastMenu') || 'B'; } catch(e) { return 'B'; }
+}
+function setLastMenu(m) {
+  try { localStorage.setItem('lastMenu', m); } catch(e) {}
+}
+
+function showTodayWorkout() {
+  var last = getLastMenu();
+  var today = (last === 'A') ? 'B' : 'A';
+  setLastMenu(today);
+
+  var badge = document.getElementById('menuBadge');
+  badge.textContent = 'ã¡ãã¥ã¼ ' + today;
+  badge.className = 'menu-badge menu-' + today.toLowerCase();
+
+  var list = document.getElementById('exerciseList');
+  var exercises = menus[today];
+  var html = '';
+
+  exercises.forEach(function(ex, idx) {
+    var maxSets = parseInt(ex.sets.split('-').pop());
+    html += '<div class="exercise-card">';
+    html += '<div class="exercise-name">' + (idx+1) + '. ' + ex.name + '</div>';
+    html += '<div class="exercise-meta">';
+    html += '<span class="meta-tag"><b>' + ex.sets + '</b> ã»ãã</span>';
+    html += '<span class="meta-tag"><b>' + ex.reps + '</b> ã¬ãã</span>';
+    html += '<span class="meta-tag">ä¼æ© <b>' + ex.rest + '</b></span>';
+    html += '</div>';
+    for (var s = 1; s <= maxSets; s++) {
+      html += '<div class="set-row">';
+      html += '<span class="set-label">Set ' + s + '</span>';
+      html += '<input type="text" class="set-input" placeholder="éé" inputmode="decimal">';
+      html += '<input type="text" class="set-input" placeholder="åæ°" inputmode="numeric">';
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+
+  list.innerHTML = html;
+
+  var display = document.getElementById('workoutDisplay');
+  display.style.display = 'block';
+  display.style.animation = 'none';
+  display.offsetHeight;
+  display.style.animation = 'fadeUp 0.5s ease both';
+  display.scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>
