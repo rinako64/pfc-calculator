@@ -76,76 +76,74 @@ body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%
 .menu-badge.menu-a{background:rgba(0,210,255,0.12);color:var(--accent);border:1px solid rgba(0,210,255,0.25)}
 .menu-badge.menu-b{background:rgba(123,97,255,0.12);color:var(--accent2);border:1px solid rgba(123,97,255,0.25)}
 .workout-display{display:none;animation:fadeUp 0.5s ease both}
-.exercise-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.exercise-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;overflow:hidden}
 .exercise-name{font-size:0.95rem;font-weight:600;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .exercise-meta{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .meta-tag{padding:4px 10px;border-radius:6px;font-size:0.72rem;font-weight:500;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)}
 .meta-tag b{color:var(--text);font-weight:600}
-.set-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.set-label{font-size:0.75rem;color:var(--text-dim);width:52px;flex-shrink:0;font-weight:500}
-.set-input{flex:1;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.9rem;font-weight:500;outline:none;text-align:center;transition:border-color 0.2s}
-.set-input:focus{border-color:var(--orange)}
-.set-input::placeholder{color:#444;font-size:0.8rem}
+.set-memo{width:100%;min-width:0;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.78rem;font-weight:400;outline:none;transition:border-color 0.2s;margin-top:4px}
+.set-memo:focus{border-color:var(--orange)}
+.set-memo::placeholder{color:#444;font-size:0.75rem}
 
 .footer{text-align:center;margin-top:32px;font-size:0.68rem;color:#444;font-weight:300}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header"><h1>My PFC & Training</h1><p>ãã¼ã½ãã«æ¸éãµãã¼ã</p></div>
+  <div class="header"><h1>My PFC & Training</h1><p>パーソナル減量サポート</p></div>
 
   <!-- Tab Navigation -->
   <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('pfc')">PFCè¨ç®</button>
-    <button class="tab-btn" onclick="switchTab('workout')">ç­ãã¬ç®¡ç</button>
+    <button class="tab-btn active" onclick="switchTab('workout')">筋トレ管理</button>
+    <button class="tab-btn" onclick="switchTab('pfc')">PFC計算</button>
   </div>
 
   <!-- ===== PFC PAGE ===== -->
-  <div class="tab-page active" id="page-pfc">
-    <div class="card"><div class="card-title">æ¸¬å®ãã¼ã¿å¥å</div>
-      <div class="input-group"><label class="input-label">ä½é</label><input type="number" class="input-field" id="weight" placeholder="56.0" step="0.1"><div class="unit">kg</div></div>
+  <div class="tab-page" id="page-pfc">
+    <div class="card"><div class="card-title">測定データ入力</div>
+      <div class="input-group"><label class="input-label">体重</label><input type="number" class="input-field" id="weight" placeholder="56.0" step="0.1"><div class="unit">kg</div></div>
       <div class="input-row">
-        <div class="input-group"><label class="input-label">é¦åã</label><input type="number" class="input-field" id="neck" placeholder="34.5" step="0.1" value="34.5"><div class="unit">cm</div></div>
-        <div class="input-group"><label class="input-label">ã¦ã¨ã¹ãï¼ã¸ãå¨ãï¼</label><input type="number" class="input-field" id="waist" placeholder="78.0" step="0.1"><div class="unit">cm</div></div>
+        <div class="input-group"><label class="input-label">首回り</label><input type="number" class="input-field" id="neck" placeholder="34.5" step="0.1" value="34.5"><div class="unit">cm</div></div>
+        <div class="input-group"><label class="input-label">ウエスト（へそ周り）</label><input type="number" class="input-field" id="waist" placeholder="78.0" step="0.1"><div class="unit">cm</div></div>
       </div>
-      <div class="input-group"><label class="input-label">ããã</label><input type="number" class="input-field" id="hip" placeholder="94.0" step="0.1"><div class="unit">cm</div></div>
-      <button class="calc-btn" onclick="calculate()">è¨ç®ãã</button>
+      <div class="input-group"><label class="input-label">ヒップ</label><input type="number" class="input-field" id="hip" placeholder="94.0" step="0.1"><div class="unit">cm</div></div>
+      <button class="calc-btn" onclick="calculate()">計算する</button>
     </div>
     <div class="results" id="results">
-      <div class="result-hero"><div class="label">1æ¥ã®æåã«ã­ãªã¼</div><div class="value" id="calValue">--<span> kcal</span></div></div>
+      <div class="result-hero"><div class="label">1日の摂取カロリー</div><div class="value" id="calValue">--<span> kcal</span></div></div>
       <div class="macro-grid">
-        <div class="macro-card protein"><div class="macro-label">ã¿ã³ãã¯è³ª</div><div class="macro-value" id="pValue">--<span>g</span></div></div>
-        <div class="macro-card fat"><div class="macro-label">èè³ª</div><div class="macro-value" id="fValue">--<span>g</span></div></div>
-        <div class="macro-card carb"><div class="macro-label">ç³è³ª</div><div class="macro-value" id="cValue">--<span>g</span></div></div>
+        <div class="macro-card protein"><div class="macro-label">タンパク質</div><div class="macro-value" id="pValue">--<span>g</span></div></div>
+        <div class="macro-card fat"><div class="macro-label">脂質</div><div class="macro-value" id="fValue">--<span>g</span></div></div>
+        <div class="macro-card carb"><div class="macro-label">糖質</div><div class="macro-value" id="cValue">--<span>g</span></div></div>
       </div>
-      <div class="pace-bar"><span>ð</span>æ³å®ãã¼ã¹ï¼<span class="pace-val" id="paceValue">--</span> kg/æ</div>
-      <div class="card"><div class="card-title">åè¨³</div>
-        <div class="detail-row"><span class="dl">ä½èèªç</span><span class="dv" id="bfValue">--%</span></div>
-        <div class="detail-row"><span class="dl">é¤èèªä½é (LBM)</span><span class="dv" id="lbmValue">-- kg</span></div>
-        <div class="detail-row"><span class="dl">åºç¤ä»£è¬ (BMR)</span><span class="dv" id="bmrValue">-- kcal</span></div>
-        <div class="detail-row"><span class="dl">ç·æ¶è²»ã«ã­ãªã¼ (TDEE)</span><span class="dv" id="tdeeValue">-- kcal</span></div>
+      <div class="pace-bar"><span>📉</span>想定ペース：<span class="pace-val" id="paceValue">--</span> kg/月</div>
+      <div class="card"><div class="card-title">内訳</div>
+        <div class="detail-row"><span class="dl">体脂肪率</span><span class="dv" id="bfValue">--%</span></div>
+        <div class="detail-row"><span class="dl">除脂肪体重 (LBM)</span><span class="dv" id="lbmValue">-- kg</span></div>
+        <div class="detail-row"><span class="dl">基礎代謝 (BMR)</span><span class="dv" id="bmrValue">-- kcal</span></div>
+        <div class="detail-row"><span class="dl">総消費カロリー (TDEE)</span><span class="dv" id="tdeeValue">-- kcal</span></div>
       </div>
-      <div class="advice"><div class="card-title orange">ã¬ã¤ãã©ã¤ã³</div>
-        <div class="advice-block"><h4>ãè¨±å®¹ç¯å²ã</h4><ul>
-          <li>æåã«ã­ãªã¼ï¼+0ã100kcal</li><li>ã¿ã³ãã¯è³ªï¼Â±15g</li><li>èè³ªï¼Â±10g</li>
-          <li>ç³è³ªï¼ã¿ã³ãã¯è³ªã»èè³ªãæã£ãå¾ãä½ã£ãã«ã­ãªã¼åãæã</li></ul></div>
-        <div class="walking-block"><p class="walking-highlight">1æ¥8,000ã10,000æ­©ãç®æ¨ã«æ¯æ¥æ­©ãããã«ãã¾ããã</p>
-          <p style="margin-top:8px">ãã®æ­©æ°ã¯è²·ãç©ãéå¤ãªã©ãæ¥å¸¸çæ´»ã§ã®æ´»åãå«ãã§OKã§ã</p>
-          <p style="margin-top:8px">æ­©æ°ãç¨¼ããªãã¦ãé£äºã«æ°ãã¤ããã°ç©ããå¯è½æ§ã¯ããã¾ãããç©ããã¨ãã¦ããã¼ã¹ãéå¸¸ã«éãorå¨ãç©ããªãå ´åãæ®ã©ãªã®ã§ãå¯è½ãªéãæ­©ãããã«ãã¾ããã</p>
+      <div class="advice"><div class="card-title orange">ガイドライン</div>
+        <div class="advice-block"><h4>【許容範囲】</h4><ul>
+          <li>摂取カロリー：+0〜100kcal</li><li>タンパク質：±15g</li><li>脂質：±10g</li>
+          <li>糖質：タンパク質・脂質を摂った後、余ったカロリー分を摂る</li></ul></div>
+        <div class="walking-block"><p class="walking-highlight">1日8,000〜10,000歩を目標に毎日歩くようにしましょう</p>
+          <p style="margin-top:8px">この歩数は買い物や通勤など、日常生活での活動も含んでOKです</p>
+          <p style="margin-top:8px">歩数を稼がなくても食事に気をつければ痩せる可能性はありますが、痩せたとしてもペースが非常に遅いor全く痩せない場合が殆どなので、可能な限り歩くようにしましょう</p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ===== WORKOUT PAGE ===== -->
-  <div class="tab-page" id="page-workout">
+  <div class="tab-page active" id="page-workout">
     <div style="text-align:center;margin-bottom:20px">
-      <button class="workout-btn" onclick="showTodayWorkout()">ðª ä»æ¥ã®ç­ãã¬ã¡ãã¥ã¼</button>
+      <button class="workout-btn" onclick="showTodayWorkout()">💪 今日の筋トレメニュー</button>
     </div>
 
     <div class="workout-display" id="workoutDisplay">
       <div style="text-align:center;margin-bottom:20px">
-        <div class="menu-badge" id="menuBadge">ã¡ãã¥ã¼ A</div>
+        <div class="menu-badge" id="menuBadge">メニュー A</div>
       </div>
       <div id="exerciseList"></div>
     </div>
@@ -158,7 +156,7 @@ body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%
 // ===== TAB SWITCHING =====
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => {
-    b.classList.toggle('active', (tab==='pfc'&&i===0)||(tab==='workout'&&i===1));
+    b.classList.toggle('active', (tab==='workout'&&i===0)||(tab==='pfc'&&i===1));
   });
   document.getElementById('page-pfc').classList.toggle('active', tab==='pfc');
   document.getElementById('page-workout').classList.toggle('active', tab==='workout');
@@ -170,7 +168,7 @@ function calculate(){
       n=parseFloat(document.getElementById('neck').value),
       ws=parseFloat(document.getElementById('waist').value),
       h=parseFloat(document.getElementById('hip').value);
-  if(!w||!n||!ws||!h){alert('ãã¹ã¦ã®é ç®ãå¥åãã¦ãã ãã');return}
+  if(!w||!n||!ws||!h){alert('すべての項目を入力してください');return}
   var H=164,A=1.3208,PC=2.6628,
       c=ws+h-n,
       d=1.29579-0.35004*Math.log10(c)+0.22100*Math.log10(H),
@@ -197,18 +195,18 @@ function calculate(){
 // ===== WORKOUT TRACKER =====
 var menus = {
   A: [
-    {name:'ã©ã³ã¸', sets:'3-4', reps:'6-12', rest:'3 min'},
-    {name:'ãããã¹ã©ã¹ã', sets:'3-4', reps:'10-20', rest:'2 min'},
-    {name:'ãã³ããã¬ã¹', sets:'3', reps:'6-12', rest:'3 min'},
-    {name:'ãã¼ãã«ã­ã¦', sets:'3', reps:'6-12', rest:'3 min'},
-    {name:'ã±ã¼ãã«ã¯ã©ã³ã', sets:'6-8', reps:'10-20', rest:'2 min'},
+    {name:'ランジ', sets:'3-4', reps:'6-12', rest:'3 min'},
+    {name:'ヒップスラスト', sets:'3-4', reps:'10-20', rest:'2 min'},
+    {name:'ベンチプレス', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'バーベルロウ', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ケーブルクランチ', sets:'6-8', reps:'10-20', rest:'2 min'},
   ],
   B: [
-    {name:'ã«ã¼ããã¢ã³ããããªãã', sets:'3-4', reps:'6-12', rest:'3 min'},
-    {name:'ãããã¹ã©ã¹ã', sets:'3-4', reps:'10-20', rest:'2 min'},
-    {name:'ãªã¼ãã¼ããããã¬ã¹', sets:'3', reps:'6-12', rest:'3 min'},
-    {name:'ã©ãããã«ãã¦ã³', sets:'3', reps:'6-12', rest:'3 min'},
-    {name:'ã±ã¼ãã«ã¯ã©ã³ã', sets:'6-8', reps:'10-20', rest:'2 min'},
+    {name:'ラットプルダウン（ロー）', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ルーマニアンデッドリフト', sets:'3-4', reps:'6-12', rest:'3 min'},
+    {name:'ヒップスラスト', sets:'3-4', reps:'10-20', rest:'2 min'},
+    {name:'オーバーヘッドプレス', sets:'3', reps:'6-12', rest:'3 min'},
+    {name:'ケーブルクランチ', sets:'6-8', reps:'10-20', rest:'2 min'},
   ]
 };
 
@@ -225,7 +223,7 @@ function showTodayWorkout() {
   setLastMenu(today);
 
   var badge = document.getElementById('menuBadge');
-  badge.textContent = 'ã¡ãã¥ã¼ ' + today;
+  badge.textContent = 'メニュー ' + today;
   badge.className = 'menu-badge menu-' + today.toLowerCase();
 
   var list = document.getElementById('exerciseList');
@@ -233,25 +231,28 @@ function showTodayWorkout() {
   var html = '';
 
   exercises.forEach(function(ex, idx) {
-    var maxSets = parseInt(ex.sets.split('-').pop());
     html += '<div class="exercise-card">';
     html += '<div class="exercise-name">' + (idx+1) + '. ' + ex.name + '</div>';
     html += '<div class="exercise-meta">';
-    html += '<span class="meta-tag"><b>' + ex.sets + '</b> ã»ãã</span>';
-    html += '<span class="meta-tag"><b>' + ex.reps + '</b> ã¬ãã</span>';
-    html += '<span class="meta-tag">ä¼æ© <b>' + ex.rest + '</b></span>';
+    html += '<span class="meta-tag"><b>' + ex.sets + '</b> セット</span>';
+    html += '<span class="meta-tag"><b>' + ex.reps + '</b> レップ</span>';
+    html += '<span class="meta-tag">休憩 <b>' + ex.rest + '</b></span>';
     html += '</div>';
-    for (var s = 1; s <= maxSets; s++) {
-      html += '<div class="set-row">';
-      html += '<span class="set-label">Set ' + s + '</span>';
-      html += '<input type="text" class="set-input" placeholder="éé" inputmode="decimal">';
-      html += '<input type="text" class="set-input" placeholder="åæ°" inputmode="numeric">';
-      html += '</div>';
-    }
+    html += '<input type="text" class="set-memo" data-key="' + today + '-' + idx + '" placeholder="メモ">';
     html += '</div>';
   });
 
   list.innerHTML = html;
+
+  // Load saved data
+  loadWorkoutData();
+
+  // Auto-save on input
+  list.querySelectorAll('.set-memo').forEach(function(input) {
+    input.addEventListener('input', function() {
+      saveWorkoutData();
+    });
+  });
 
   var display = document.getElementById('workoutDisplay');
   display.style.display = 'block';
@@ -259,6 +260,26 @@ function showTodayWorkout() {
   display.offsetHeight;
   display.style.animation = 'fadeUp 0.5s ease both';
   display.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function saveWorkoutData() {
+  try {
+    var data = {};
+    document.querySelectorAll('.set-memo[data-key]').forEach(function(input) {
+      if (input.value) data[input.getAttribute('data-key')] = input.value;
+    });
+    localStorage.setItem('workoutData', JSON.stringify(data));
+  } catch(e) {}
+}
+
+function loadWorkoutData() {
+  try {
+    var data = JSON.parse(localStorage.getItem('workoutData') || '{}');
+    document.querySelectorAll('.set-memo[data-key]').forEach(function(input) {
+      var key = input.getAttribute('data-key');
+      if (data[key]) input.value = data[key];
+    });
+  } catch(e) {}
 }
 </script>
 </body>
